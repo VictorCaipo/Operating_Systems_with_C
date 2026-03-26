@@ -1,7 +1,8 @@
 /* Definition:
 Concurrency: We use this conceptual term to refer to problems that
 arise because of concurrency.
-Thread: Unidad mas pequena de procesamiento que un OS ejecuta (un thread/hilo es parte de el process)
+Thread: Minimum unity of process that an OS execute. A thread is part
+of a process.
 */
 
 /* Working:
@@ -31,22 +32,24 @@ void *worker(void *arg){
 int main (int argc, char *argv[]){
     if (argc != 2){
         fprintf(stderr, "usage: threads <value>\n");
-        //imprime texto formateado en un stream specifico stderr es el stream de errores, el segundo argumento es el mensaje
+        //stderr: stream of error
+        //the second argument is the message
         exit(1);
-        //termina el programa inmediatamente, segun el argumento puede ser exito o error
     }
     loops = atoi(argv[1]);
-    //pertenece a stdlib, convierte string a numero entero
+    //convert a string to a int
 
     pthread_t p1, p2;
 
     printf("Initial value: %d \n", counter);
 
     Pthread_create(&p1, NULL, worker, NULL);
-    //crea un nuevo thread (identificador,atributos,funcion a ejecturar,argumentos de la funcion)
+    //creates a new thread 
+    //(identificator,atributs,function to be executed,arguments)
     Pthread_create(&p2, NULL, worker, NULL);
     Pthread_join(p1, NULL);
-    //espera a que un thread termine (thread a esperar, valor retornado por el thread)
+    //waiting thread to be finished
+    //(thread to be finished, returned value)
     Pthread_join(p2, NULL);
     
     printf("Final value: %d\n", counter);

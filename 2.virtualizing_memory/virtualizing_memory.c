@@ -1,23 +1,20 @@
-#include <unistd.h>//funciones sistema operativo tipo unix getpid()
-#include <stdio.h>//input output sistema operativo printf()
-#include <stdlib.h>//memoria sistema operativo malloc()
-#include <assert.h>//condiciones, detecta errores rapidamente, assert()
+#include <unistd.h>//OS functions
+#include <stdio.h>
+#include <stdlib.h>//dynamic memory
+#include <assert.h>//to detect mistakes
 #include <time.h>
 /*
-Un proceso es un programa ejecutandose, getpid(): obtiene el numero o
-codigo del proceso actual
+A process is a program running with many permissions
 */
 void spin(int seconds);
 
 int main(int argc, char *argv[]){
     /*
-    malloc: el programa pide memoria al heap, malloc devuelve un
-    puntero a esa direccion, si no hay espacio en la memoria
-    devuelve NULL, la memoria reservada debe ser liberada despues
-    con free()
+    malloc request memory from the heap, it return a pointer to that
+    adress.
     */    
     int *p = malloc(sizeof(int));
-    assert(p != NULL);//El programa continua si p es diferente de NULL
+    assert(p != NULL);//Program continues if malloc works
 
     printf(" (%d) address of p: %p \n", getpid(), (void*)p );
     *p = 0;
@@ -27,8 +24,9 @@ int main(int argc, char *argv[]){
         printf(" (%d) p: %d \n", getpid(), *p);
     }
     /*
-    %d formato decimal %08x formato hexadecimal, rellenar con ceros
-    8 caracteres
+    %d decimal 
+    %08x hexadecimal, fill with zeros
+    8 character
     */
     return 0;
 }
@@ -36,22 +34,13 @@ int main(int argc, char *argv[]){
 void spin(int seconds) {
     time_t start = time(NULL);
     while (time(NULL) - start < seconds) {
-        // busy wait (no hace nada)
+        //just consume time
     }
 }
 /*
-La magia de este programa ocurre al correr el mismo programa varias veces,
-porque nos damos cuenta de que una misma direccion se repite para
-varios procesos, lo cual parece raro.
+When running the program many times, we notice the same adress is
+repeated for different process.
 
-Esto ocurre porque cada proceso tiene su propio espacio de memoria virtual.
-El sistema operativo asigna memoria fisica para cada proceso y mantiene
-una tabla que traduce las direcciones virtuales a direcciones fisicas.
-
-La MMU se encarga de realizar esta traduccion entre direcciones virtuales
-y fisicas.
-
-Por eso pueden existir variables con la misma direccion virtual en
-distintos procesos, aunque en la memoria fisica real se encuentren
-en lugares diferentes.
+This occurs because every process have a different virtual memory. OS
+assign memory for each process.
 */

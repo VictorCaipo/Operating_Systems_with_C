@@ -1,36 +1,32 @@
 #include <stdio.h>//input output
-#include <unistd.h>//acceso a llamadas al sistema de unix/linux
-#include <assert.h>//verificar condiciones en tiempo de ejecucion
-#include <fcntl.h>//control de archivos
-#include <sys/types.h>//define tipos de datos del sistema usados en llamadas al sistema
+#include <unistd.h>//interact unix/linux
+#include <assert.h>//verify executions
+#include <fcntl.h>//file control
+#include <sys/types.h>//define system data types
 #include <sys/stat.h>
 
 /*
-The program muestra como mover datos de la memoria a el disco
-
+Program shows how to move data from memory to the disk
 "fd" is a number called file descriptor, that has a specific meaning
-
-El programa no escribe al disco directamente, pasa por el kernel siempre,
-las funciones que usa son system calls (open, write and close).
-
+Program doesn'save data at the disk directly, it go throuhgt Kernel.
 */
 
 int main(int argc, char *argv[]){
 
     int fd = open("/tmp/file",O_WRONLY|O_CREAT|O_TRUNC,S_IRWXU);
     /*
-    abrir o crear archivos
-    open(ruta del archivo,argumentos,permisos del usuario)
-    la funcion devuelve numero entero si funciona, -1 si hay error
+    open o create files
+    open(adress,arguments,credentials)
+    it returns a number if it works, -1 if there any mistake
     */
-    assert(fd>-1);//continua el programa si fd es mayor a -1
+    assert(fd>-1);
     int rc = write(fd, "hello world\n",12);
     /*
-    escribir bytes en un archivo
-    write(descriptor del archivo, texto a escribir, numero de bytes)
+    write file
+    write(descriptor,text to be write,byte number)
     */
-    assert(rc == 12);//confirma que se escribieron todos los bytes
-    close(fd);//cierra archivo, libera recursos, asegura que datos se guarden correctamente
+    assert(rc == 12);//confirm all bytes were written
+    close(fd);
     return 0;
 }
 
